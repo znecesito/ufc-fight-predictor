@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from . import apify_source
 from .apify_source import ApifySourceError
-from .models import Bout, Event
+from .models import Event
 
 
 def _prompt_choice(count: int) -> int:
@@ -28,12 +28,12 @@ def _print_events(events: list[Event]) -> None:
         print(line)
 
 
-def _print_card(event: Event, bouts: list[Bout]) -> None:
+def _print_card(event: Event) -> None:
     print(f"\nFight card — {event.name}\n")
-    if not bouts:
+    if not event.bouts:
         print("  No bouts found.")
         return
-    for bout in bouts:
+    for bout in event.bouts:
         line = f"  {bout.fighter_a} vs. {bout.fighter_b}"
         if bout.weight_class:
             line += f"  [{bout.weight_class}]"
@@ -51,16 +51,4 @@ def run() -> None:
     _print_events(events)
     choice = _prompt_choice(len(events))
     selected = events[choice]
-
-    if not selected.url:
-        print(f"\n{selected.name} has no source URL to look up its card — can't continue.")
-        return
-
-    try:
-        raw_bouts = apify_source.get_event_card(selected.url)
-    except ApifySourceError as exc:
-        print(f"Couldn't load the fight card: {exc}")
-        return
-
-    bouts = [Bout.from_dict(r) for r in raw_bouts]
-    _print_card(selected, bouts)
+    _print_card(selected)

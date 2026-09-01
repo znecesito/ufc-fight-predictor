@@ -1,9 +1,9 @@
 """Plain data shapes for Phase 1. No behavior, just structure.
 
-Field names in the actor's dataset records aren't documented anywhere beyond
-its description, so `from_dict` tries a handful of likely key spellings and
-falls back gracefully. `raw` keeps the untouched source record so real field
-names can be confirmed (and this parsing tightened) against a live run.
+Field names confirmed against a live run of automation-lab/ufc-events-fights-fighters
+(mode=events, includeDetails=true): each event record nests its full bout card
+under "bouts", and each bout has a two-item "fighters" array. `raw` keeps the
+untouched source record for anything not modeled yet.
 """
 
 from __future__ import annotations
@@ -12,12 +12,25 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
-def _first(record: dict, *keys: str, default: str = "") -> str:
-    for key in keys:
-        value = record.get(key)
-        if value not in (None, ""):
-            return str(value)
-    return default
+@dataclass
+class Bout:
+    fighter_a: str
+    fighter_b: str
+    weight_class: str
+    raw: dict[str, Any] = field(repr=False)
+
+    @classmethod
+    def from_dict(cls, record: dict[str, Any]) -> "Bout":
+        fighters = record.get("fighters") or []
+        names = [f.get("name", "?") for f in fighters if isinstance(f, dict)]
+        while len(names) < 2:
+            names.append("?")
+        return cls(
+            fighter_a=names[0],
+            fighter_b=names[1],
+            weight_class=record.get("weightClass") or "",
+            raw=record,
+        )
 
 
 @dataclass
@@ -26,37 +39,17 @@ class Event:
     date: str
     venue: str
     url: str
+    bouts: list[Bout]
     raw: dict[str, Any] = field(repr=False)
 
     @classmethod
     def from_dict(cls, record: dict[str, Any]) -> "Event":
+        bouts = [Bout.from_dict(b) for b in record.get("bouts") or []]
         return cls(
-            name=_first(record, "name", "eventName", "title", default="Unknown event"),
-            date=_first(record, "date", "eventDate"),
-            venue=_first(record, "venue", "location"),
-            url=_first(record, "url", "eventUrl", "sourceUrl"),
-            raw=record,
-        )
-
-
-@dataclass
-class Bout:
-    fighter_a: str
-    fighter_b: str
-    weight_class: str
-    card_position: str
-    raw: dict[str, Any] = field(repr=False)
-
-    @classmethod
-    def from_dict(cls, record: dict[str, Any]) -> "Bout":
-        return cls(
-            fighter_a=_first(
-                record, "fighterAName", "redFighter", "fighter1Name", "fighterA", default="?"
-            ),
-            fighter_b=_first(
-                record, "fighterBName", "blueFighter", "fighter2Name", "fighterB", default="?"
-            ),
-            weight_class=_first(record, "weightClass", "division"),
-            card_position=_first(record, "cardSegment", "cardPosition", "billing"),
+            name=record.get("name") or "Unknown event",
+            date=record.get("date") or "",
+            venue=record.get("location") or "",
+            url=record.get("url") or "",
+            bouts=bouts,
             raw=record,
         )

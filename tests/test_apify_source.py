@@ -7,9 +7,3 @@ def test_get_upcoming_events_requires_token(monkeypatch):
     monkeypatch.delenv("APIFY_API_TOKEN", raising=False)
     with pytest.raises(apify_source.ApifySourceError, match="APIFY_API_TOKEN"):
         apify_source.get_upcoming_events()
-
-
-def test_get_event_card_requires_token(monkeypatch):
-    monkeypatch.delenv("APIFY_API_TOKEN", raising=False)
-    with pytest.raises(apify_source.ApifySourceError, match="APIFY_API_TOKEN"):
-        apify_source.get_event_card("http://ufcstats.com/event-details/abc123")

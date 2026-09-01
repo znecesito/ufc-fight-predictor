@@ -33,36 +33,22 @@ def _run_actor(run_input: dict) -> list[dict]:
     except Exception as exc:
         raise ApifySourceError(f"Apify actor run failed: {exc}") from exc
 
-    if not run or not run.get("defaultDatasetId"):
+    if not run or not run.default_dataset_id:
         raise ApifySourceError("Apify actor run did not return a dataset.")
 
-    dataset_id = run["defaultDatasetId"]
-    return client.dataset(dataset_id).list_items().items
+    return client.dataset(run.default_dataset_id).list_items().items
 
 
 def get_upcoming_events(limit: int = 5) -> list[dict]:
-    """Return the next `limit` upcoming UFC events as raw dataset records."""
+    """Return the next `limit` upcoming UFC events, each with its full bout card nested under "bouts"."""
     items = _run_actor(
         {
             "mode": "events",
             "eventStatus": "upcoming",
+            "includeDetails": True,
             "maxItems": limit,
         }
     )
     if not items:
         raise ApifySourceError("No upcoming events were returned.")
-    return items
-
-
-def get_event_card(event_url: str) -> list[dict]:
-    """Return the bouts on an event's card as raw dataset records."""
-    items = _run_actor(
-        {
-            "mode": "fights",
-            "startUrls": [{"url": event_url}],
-            "includeDetails": True,
-        }
-    )
-    if not items:
-        raise ApifySourceError(f"No fights were returned for event: {event_url}")
     return items
