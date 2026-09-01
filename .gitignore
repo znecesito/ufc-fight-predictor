@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .env
+apify_runs_archive.json
+dan_hooker_fighter.json
+hooker_vs_saintdenis_fight.json
