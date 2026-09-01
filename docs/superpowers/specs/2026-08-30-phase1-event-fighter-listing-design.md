@@ -49,7 +49,7 @@ Auth: `APIFY_API_TOKEN` read from environment (`.env`, via `python-dotenv`).
 
 ```
 ufc_predictor/
-  apify_source.py   — wraps the actor: get_upcoming_events(), get_event_card(event_url)
+  apify_source.py   — wraps the actor: get_upcoming_events(limit)
   models.py         — Event, Bout dataclasses
   cli.py            — list events -> pick by number -> show fighters on that card
 main.py             — entrypoint
@@ -62,10 +62,17 @@ main.py             — entrypoint
   specifically — swapping the data source later (e.g. a self-built scraper)
   only touches this file.
 - **`models.py`** is plain dataclasses, no behavior:
-  - `Event`: name, date, venue, status, url
-  - `Bout`: fighter_a_name, fighter_b_name, weight_class, card_position
-- **`cli.py`** owns the step order: list → pick → list card → render. No
-  network calls of its own — it calls into `apify_source`.
+  - `Event`: name, date, venue, url, bouts (list of `Bout`)
+  - `Bout`: fighter_a, fighter_b, weight_class
+- **`cli.py`** owns the step order: list → pick → render. No network calls of
+  its own — it calls into `apify_source`.
+
+Confirmed via a live run against the real actor: with `mode=events` and
+`includeDetails=true` (the schema default), each event record already nests
+its full bout card under `bouts`, and each bout carries a two-item `fighters`
+array (`{id, name, url}` per fighter). There's no separate "fights" call
+needed and no `cardPosition`/billing field in the actual output — one actor
+call covers the whole Phase 1 flow.
 
 No persistence layer in Phase 1. No `Fighter` model or fighter-detail fetch
 yet — that's Phase 2's job, once fighter stats/history are back in scope,
@@ -75,15 +82,14 @@ re-scrape of a fighter who hasn't fought since the last time we looked).
 ## Data flow
 
 1. `cli.py` calls `apify_source.get_upcoming_events(limit=5)`
-   (`mode=events`, `eventStatus=upcoming`). Always a live call — the "what's
-   next" list changes as events get scheduled, and it's cheap.
+   (`mode=events`, `eventStatus=upcoming`, `includeDetails=true`). Always a
+   live call — the "what's next" list changes as events get scheduled, and
+   it's cheap. Each returned event already includes its full bout card.
 2. User is shown the events with a number to pick from; they type a number.
-3. `cli.py` calls `apify_source.get_event_card(event_url)`
-   (`mode=fights`, `startUrls=[event_url]`). Live call, returns bout rows.
-4. `cli.py` prints the card: fighter vs. fighter, weight class, per bout, in
-   card order.
+3. `cli.py` prints the selected event's card: fighter vs. fighter, weight
+   class, per bout, in card order — no further network call needed.
 
-Two live Apify calls per run. No caching needed yet since nothing here is
+One live Apify call per run. No caching needed yet since nothing here is
 expensive enough, or stable enough, to be worth persisting.
 
 ## Error handling
