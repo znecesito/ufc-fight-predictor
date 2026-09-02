@@ -107,6 +107,17 @@ landed-of-attempted, distance/clinch/ground, TD%, control time. That data
 genuinely exists on this source; the fighter-level summary just doesn't
 carry it forward.
 
+**Second confirmed instance of the same bug pattern (2026-09-01):**
+`weightClass` inside `fighters` mode's embedded `fightHistory` also always
+comes back `null` — verified across every entry for two fighters (Jacob
+Malkoun: 9 fights, Torrez Finney: 5 fights), zero exceptions. Same fix as
+the date bug: the real value is available from `events` mode (their bout
+was correctly tagged `"weightClass": "Middleweight"` in the UFC 325 card
+pull) or from a direct `fights`-mode call on that fight's URL. **General
+rule going forward: treat `fighters` mode's embedded fight-history summary
+as identity/result-only — pull date and weight class from `events` or
+`fights` mode instead whenever they matter.**
+
 **Correction (2026-09-01):** per-fight date is *not* actually a hard gap.
 The `null` above is a bug specific to the nested `event` object inside a
 `fights`-mode response. Calling `events` mode directly on that same event's
