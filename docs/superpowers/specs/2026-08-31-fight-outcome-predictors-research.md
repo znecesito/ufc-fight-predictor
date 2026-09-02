@@ -92,7 +92,7 @@ increasing depth:**
 | Strike breakdown by target (head/body/leg) & position (distance/clinch/ground) | ❌ | ❌ | ✅ |
 | Takedown %, control time | ❌ | ❌ | ✅ |
 | Method detail (e.g. "Punches to Head From Mount"), referee | ❌ | ❌ | ✅ |
-| Per-fight date (for recency/layoff) | ✅ (for the event itself) | ❌ | ❌ (came back `null` even here) |
+| Per-fight date (for recency/layoff) | ✅ (for the event itself) | ❌ | ❌ (came back `null` here — but see correction below) |
 | Current win/loss streak | — | derivable ourselves (fightHistory is ordered) | — |
 | Title-bout flag, opponent quality/ranking-at-time | ❌ | ❌ | ❌ |
 | Red/blue corner assignment | ❌ | ❌ | ❌ (only "W"/"L" per fighter, no corner label) |
@@ -107,6 +107,17 @@ landed-of-attempted, distance/clinch/ground, TD%, control time. That data
 genuinely exists on this source; the fighter-level summary just doesn't
 carry it forward.
 
+**Correction (2026-09-01):** per-fight date is *not* actually a hard gap.
+The `null` above is a bug specific to the nested `event` object inside a
+`fights`-mode response. Calling `events` mode directly on that same event's
+URL returns a real date every time (verified: UFC 325 → `"date":
+"2026-01-31"`, not null). And it's cheap in practice: a completed event's
+date is a **permanent fact**, so once fetched it can be cached forever
+(no staleness window needed, unlike the upcoming-events list) — and it's
+**per unique event, not per fight**, so it's shared across every fighter
+who fought on that card. Once our local DB has an event cached, layoff time
+for any fighter's fight there is free.
+
 ### Architectural implications, before designing the deterministic pipeline
 
 1. **No single call gets everything.** Design needs to be: `fighters` mode
@@ -116,11 +127,11 @@ carry it forward.
    linearly per fight, and research says recent form matters more than deep
    career history anyway, so the cost constraint and the research
    recommendation point the same direction).
-2. **Recency/layoff-time is a real gap.** Per-fight dates aren't reliably
-   available even via the enrichment call (came back `null`). Options:
-   approximate recency by fight order (we know sequence, not exact days),
-   accept the gap, or spend an extra `events`-mode call per historical event
-   to backfill real dates — a cost/precision tradeoff to decide explicitly.
+2. **Layoff-time needs one more call type, not zero.** When enriching a
+   fighter's recent fights, if the referenced event isn't already in our
+   local cache, pull its date once via `events` mode (permanent, no
+   re-fetch ever) — don't trust the date embedded in a `fights`-mode
+   response.
 3. **Some research-identified predictors are simply unavailable from this
    source at all**: title-bout flag, opponent quality/ranking-at-time-of-
    fight, corner assignment. The MD instructions for the non-deterministic
@@ -131,12 +142,60 @@ carry it forward.
    predictive power. Recent-form stats need to be computed by us from the
    last N fights' `fightHistory` entries, not read off a pre-computed field.
 
+## Signal-by-signal picture (consolidated)
+
+**Strong signal, available for free** (already in `fighters` mode, zero extra calls):
+
+| Predictor | Field |
+|---|---|
+| Strikes absorbed (CS229's #1 feature) | `careerStatistics.SApM` |
+| Striking accuracy/defense | `Str. Acc.`, `Str. Def.` |
+| Takedown accuracy | `TD Acc.` |
+| Age | `dateOfBirth` (computed) |
+| Win/loss streaks | derived by scanning `fightHistory` order |
+| Career win/loss counts | `record` string |
+| Finish-method history (KO/TKO %, decision %, sub %) | tallied from `method` per `fightHistory` entry |
+
+**Strong signal, requires a `fights`-mode enrichment call per specific past fight:**
+
+| Predictor | Field |
+|---|---|
+| Strike-location breakdown (head/body/leg, distance/clinch/ground) | `significantStrikes.{...}` |
+| Total strikes landed (not just significant) | `totals.{fighter}.Total str.` |
+| Takedown %, control time per fight | `totals.{fighter}.{Td %, Ctrl}` |
+| Exact per-fight date (layoff/recency) | via a follow-up `events`-mode call on that fight's event URL (permanently cacheable) |
+
+**Weak signal per research, but available for free anyway** — don't over-weight: reach (barely beats a coin flip outside heavyweight).
+
+**Real gaps, unavailable from this actor at any depth**: title-bout flag,
+opponent quality/ranking-at-time-of-fight, red/blue corner assignment.
+
+## Alternative Apify actors investigated (dead ends)
+
+Checked whether other UFC-data actors on Apify might fill these gaps or
+offer a better source. Most (`parseforge/ufcstats-scraper`,
+`jungle_synthesizer/ufcstats-mma-historical-fight-stats-scraper`,
+`superapis/ufc-stats`, `fetchfinch/ufc-stats-scraper`) just re-scrape
+ufcstats.com with the same limitations, and most had no documented input
+schema at all (placeholder `{helloWorld: 123}` example input) — lower
+confidence than what we've already verified.
+
+**`jenko_systems/ufc-historical-stats`** looked genuinely different on paper
+(proprietary composite metrics — JFI/JSP/JGD/JCG/JDS/JKR — plus multi-
+promotion coverage: UFC/Bellator/PFL/Invicta/Rizin, and a `matchup` mode
+built for exactly our head-to-head use case). Tested it directly with a
+real matchup request (Hooker vs. Poirier, `include_jenko`/`jenko_full`
+true) — **it silently ignored our input and ran an unrelated default query
+instead** (`jenko_ranking` top-10, nobody we asked about). Its own log also
+revealed it runs off a bundled, only-occasionally-refreshed SQLite
+database rather than scraping live, and the log output is inconsistently
+localized (English/Portuguese mixed) — signs of a low-effort, unreliable
+actor. Rejected; not worth further spend debugging it.
+
 ## Not yet decided
 
 - Exactly how many past fights to enrich in full detail (cost vs. recency
   tradeoff)
-- Whether to spend the extra `events`-mode calls to backfill real dates, or
-  live with order-only recency
 - The stored "artifact" schema itself (what a deterministic per-fighter/
   per-matchup record looks like once fetched) — this is the next thing to
   design, and the MD instructions for the non-deterministic report get
