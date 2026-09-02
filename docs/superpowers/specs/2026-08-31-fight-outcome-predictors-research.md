@@ -203,10 +203,74 @@ database rather than scraping live, and the log output is inconsistently
 localized (English/Portuguese mixed) — signs of a low-effort, unreliable
 actor. Rejected; not worth further spend debugging it.
 
+## Blind-test run #1: Malkoun vs. Finney (2026-09-01)
+
+Ran the pipeline concept live: pulled both fighters' `fighters`-mode
+profiles, computed pre-fight recent-form from prior fights only (no
+leakage from the target bout), had the user predict blind, then revealed
+the real result and — separately — pulled `fights`-mode enrichment on each
+fighter's last 2 fights to see if the granular detail would have helped.
+
+- **User predicted:** Finney by unanimous decision.
+- **Actual result:** Malkoun won by unanimous decision, 117–27 significant
+  strikes, decisively — the opposite of what every summary-level signal
+  suggested (Finney had the better streak, lower recent SApM, and was
+  younger).
+- **What the enrichment revealed that the summary didn't:** Finney's clean
+  recent-form numbers were built on takedown/control-time volume, not
+  output — his most recent win (vs. Valentin) had 13:16 of control time
+  in a 15-minute fight but only 4 significant strikes landed, and still
+  came out a **split** decision, not unanimous. That's a real, visible
+  crack in an otherwise "undefeated, low SApM" profile that the
+  aggregate stats alone completely hid. It wouldn't have flipped the pick
+  to a confident Malkoun call, but it's exactly the kind of caveat a
+  scouting report should surface instead of over-trusting a clean streak.
+- **Takeaway:** the enrichment detail is worth the extra calls — it
+  surfaces qualitative texture (how a fighter wins, not just that they
+  win) that the top-line predictors miss, even when it doesn't change the
+  final pick.
+
+## Decisions
+
+- **Enrichment depth: last 3 fights per fighter**, going forward (the
+  Malkoun/Finney test used 2 as a quick check; 3 is the standard depth).
+- **Next run, also map each enriched fight to its event and pull that
+  event's date** (via `events` mode — permanent, cacheable per the
+  layoff-time correction above). This lets us compute each fighter's
+  actual **average time between fights** (fight frequency / layoff
+  pattern), not just recency-by-list-order.
+
+## Emerging app shape
+
+A clearer picture of the whole pipeline is forming:
+
+1. **Deterministic step**: pull full enrichment (career profile + last 3
+   fights per fighter, each mapped to its event for a real date) via
+   Apify → this is the stored, factual "artifact."
+2. **Non-deterministic step**: Claude predicts the fight — but **grounded
+   only in that deterministic artifact**, explicitly instructed not to be
+   "clever" or bring in outside knowledge/priors. This step's instructions
+   live in an MD file (not yet created). Every time we discover something
+   new and useful to check for, or a red-flag pattern worth watching, that
+   *isn't* already part of the enrichment schema, it gets added to that MD
+   file — so it's an evolving prediction-methodology doc, built up from
+   real test runs like the one above, not written speculatively upfront.
+3. **The actual "meat" of the app is visualization** — how both the
+   deterministic report and Claude's prediction get presented to the user.
+   The Dan Hooker scouting-report artifact from earlier in this session is
+   the liked reference point for that visual style.
+
+## Immediate next steps (resuming later)
+
+- Research how to best visualize this data — building on the Dan Hooker
+  artifact style already liked.
+- Run this blind-prediction exercise a few more times with full 3-fight
+  enrichment (+ event-date fight-frequency) per fighter, to keep
+  sharpening the deterministic side before formalizing the prediction MD
+  file.
+
 ## Not yet decided
 
-- Exactly how many past fights to enrich in full detail (cost vs. recency
-  tradeoff)
 - The stored "artifact" schema itself (what a deterministic per-fighter/
   per-matchup record looks like once fetched) — this is the next thing to
   design, and the MD instructions for the non-deterministic report get
