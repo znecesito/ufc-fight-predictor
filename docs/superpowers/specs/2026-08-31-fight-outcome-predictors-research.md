@@ -230,6 +230,26 @@ fighter's last 2 fights to see if the granular detail would have helped.
   win) that the top-line predictors miss, even when it doesn't change the
   final pick.
 
+## Blind-test run #2: Micallef vs. Elliott (2026-09-03)
+
+First run using the new standard depth (last 3 fights per fighter — though
+Micallef only had 2 on record — each mapped to its own event for a real
+date, per the decisions below).
+
+- **User predicted:** Micallef by submission.
+- **Actual result:** Correct on both counts — Micallef won by submission,
+  round 2, 3:31.
+- **What called it:** not an aggregate stat — a single prior-fight detail.
+  In Micallef's win over Mohamed Ado, he was losing on every surface stat
+  (25% striking accuracy vs. Ado's 83%, behind on control time) and still
+  won via a triangle choke, with a submission attempt and a reversal on
+  his own line. That's a live finishing/scramble instinct that doesn't
+  show up anywhere in a career-average view.
+- **Also surfaced by the new event-date mapping:** Micallef carried an
+  **11.7-month layoff** into this fight (2025-02-08 → 2026-01-31) — the
+  first real data point from the fight-frequency check we added this
+  round.
+
 ## Decisions
 
 - **Enrichment depth: last 3 fights per fighter**, going forward (the
@@ -259,6 +279,25 @@ A clearer picture of the whole pipeline is forming:
    deterministic report and Claude's prediction get presented to the user.
    The Dan Hooker scouting-report artifact from earlier in this session is
    the liked reference point for that visual style.
+
+## Candidate signals for the future prediction MD file
+
+Not part of the Apify enrichment schema — patterns discovered by testing
+that should seed the eventual prediction-instructions MD file once it's
+created (see "Emerging app shape" above):
+
+- **Control-time without output is a weaker signal than it looks.** A
+  fighter's clean recent record/streak built mainly on takedown/control
+  volume rather than landed strikes deserves a discount — check whether
+  those wins were unanimous or split despite big control-time numbers
+  (Malkoun vs. Finney, run #1: 13:16 control time, only 4 strikes landed,
+  still a split decision).
+- **A finish despite losing every surface stat is a real "live finishing
+  instinct" tell.** If a fighter won a prior fight via KO/TKO or
+  submission while behind on striking accuracy and control time up to
+  that point, weight that heavily — it showed up as the single most
+  load-bearing signal in run #2 (Micallef's submission win over Ado,
+  down 25%-to-83% on accuracy).
 
 ## Immediate next steps (resuming later)
 
