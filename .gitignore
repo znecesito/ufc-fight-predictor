@@ -2,20 +2,10 @@
 __pycache__/
 *.pyc
 .env
+
+# Raw ad-hoc Apify pulls from exploratory/testing sessions - scraped data, not source
 apify_runs_archive.json
-dan_hooker_fighter.json
-hooker_vs_saintdenis_fight.json
-hooker_vs_poirier_jenko.json
-malkoun_fighter.json
-finney_fighter.json
-malkoun_vs_petroski_enriched.json
-malkoun_vs_brundage_enriched.json
-finney_vs_valentin_enriched.json
-finney_vs_erramy_enriched.json
-elliott_fighter.json
-micallef_fighter.json
-elliott_vs_hafez_enriched.json
-elliott_vs_ko_enriched.json
-elliott_vs_parsons_enriched.json
-micallef_vs_ado_enriched.json
-micallef_vs_jousset_enriched.json
+*_fighter.json
+*_enriched.json
+*_fight.json
+*_jenko.json

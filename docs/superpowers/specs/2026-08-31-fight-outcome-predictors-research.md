@@ -250,6 +250,25 @@ date, per the decisions below).
   first real data point from the fight-frequency check we added this
   round.
 
+## Blind-test run #3: Rowston vs. Brundage (2026-09-03)
+
+- **User predicted:** Rowston by unanimous decision, ahead on significant
+  strikes.
+- **Actual result:** Rowston won (correct) — but by **KO/TKO, round 2,
+  4:08**, not a decision. Significant strikes were 57–29 in Rowston's
+  favor, matching the striking lean called — the fight just ended before
+  it reached the scorecards.
+- **Signals that pointed the right way:** Rowston entered on a clean
+  2-fight win streak (both first-round finishes); Brundage entered with
+  no win in his last two (a muddled technical draw, then a **split**
+  decision loss despite out-controlling his opponent on takedowns and
+  control time) — the same "control time without decisive credit" caution
+  from run #1 showed up again, this time correctly flagging the weaker
+  fighter.
+- **Running tally: 2-of-3 correct winners, 2-of-3 correct methods too**
+  (run #1 wrong on both, run #2 right on both, run #3 right on winner,
+  wrong on method — decision predicted, finish happened).
+
 ## Decisions
 
 - **Enrichment depth: last 3 fights per fighter**, going forward (the
