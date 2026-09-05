@@ -40,8 +40,19 @@ def test_find_prior_fights_default_limit(malkoun_history):
     ]
 
 
-def test_find_prior_fights_opponent_not_found(malkoun_history):
-    assert find_prior_fights(malkoun_history, "Nobody Realname") == []
+def test_find_prior_fights_opponent_not_found_falls_back_to_most_recent(malkoun_history):
+    # A real bug found by an actual live run: when the two fighters haven't
+    # fought yet (the real product case - an upcoming matchup), the opponent
+    # never appears in either fighter's history, so there's no index to skip
+    # past. It must fall back to the fighter's most recent `limit` fights,
+    # not silently return nothing.
+    prior = find_prior_fights(malkoun_history, "Nobody Realname", limit=3)
+    assert len(prior) == 3
+    assert prior == malkoun_history[:3]
+
+
+def test_find_prior_fights_opponent_not_found_and_empty_history_returns_empty():
+    assert find_prior_fights([], "Nobody Realname") == []
 
 
 def test_find_prior_fights_returns_fewer_than_limit_when_not_enough_exist(finney_history):

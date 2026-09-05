@@ -6,9 +6,12 @@ Everything downstream works with plain dicts / dataclasses.
 
 from __future__ import annotations
 
+import logging
 import os
 
 from apify_client import ApifyClient
+
+logger = logging.getLogger(__name__)
 
 ACTOR_ID = "automation-lab/ufc-events-fights-fighters"
 
@@ -27,16 +30,21 @@ def _get_client() -> ApifyClient:
 
 
 def _run_actor(run_input: dict) -> list[dict]:
+    logger.info("Calling actor with input: %s", run_input)
     client = _get_client()
     try:
         run = client.actor(ACTOR_ID).call(run_input=run_input)
     except Exception as exc:
+        logger.error("Actor call raised an exception: %s", exc)
         raise ApifySourceError(f"Apify actor run failed: {exc}") from exc
 
     if not run or not run.default_dataset_id:
+        logger.error("Actor run returned no dataset. Run object: %s", run)
         raise ApifySourceError("Apify actor run did not return a dataset.")
 
-    return client.dataset(run.default_dataset_id).list_items().items
+    items = client.dataset(run.default_dataset_id).list_items().items
+    logger.info("Actor run %s returned %d item(s)", run.id, len(items))
+    return items
 
 
 def get_upcoming_events(limit: int = 5) -> list[dict]:

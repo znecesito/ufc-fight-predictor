@@ -10,3 +10,4 @@ apify_runs_archive.json
 *_fight.json
 *_jenko.json
 !tests/fixtures/*.json
+ufc_predictor.log

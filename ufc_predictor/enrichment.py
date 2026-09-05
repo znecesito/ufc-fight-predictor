@@ -28,15 +28,20 @@ def _parse_time(time_str: str) -> int:
 def find_prior_fights(
     fight_history: list[dict[str, Any]], opponent_name: str, limit: int = 3
 ) -> list[dict[str, Any]]:
-    target_index = None
+    """Return up to `limit` fights before a matchup against `opponent_name`.
+
+    `fight_history` is most-recent-first. If the two have already fought
+    (the opponent appears somewhere in the history - our blind-test/backtest
+    case), take the entries after that point, since those are the ones that
+    happened before it chronologically. If they haven't fought yet (a real
+    upcoming matchup - the actual product use case), there's no entry to
+    skip past: just return the fighter's most recent `limit` fights outright.
+    """
     for i, fight in enumerate(fight_history):
         names = [f.get("name") for f in fight.get("fighters") or []]
         if opponent_name in names:
-            target_index = i
-            break
-    if target_index is None:
-        return []
-    return fight_history[target_index + 1 : target_index + 1 + limit]
+            return fight_history[i + 1 : i + 1 + limit]
+    return fight_history[:limit]
 
 
 def compute_record_entering(fighter_name: str, prior_fights: list[dict[str, Any]]) -> str:

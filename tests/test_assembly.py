@@ -344,15 +344,29 @@ def test_build_fighter_enrichment_layoff_days_is_positive_int():
     assert enrichment.layoff_days_entering == expected
 
 
-def test_build_fighter_enrichment_no_prior_fights_when_opponent_not_in_history():
+def test_build_fighter_enrichment_falls_back_to_most_recent_when_opponent_not_in_history():
+    # The real product case: a genuinely upcoming matchup the two fighters
+    # haven't fought yet, so the opponent never appears in either history.
+    # This must fall back to the fighter's most recent fights outright, not
+    # silently produce an empty enrichment (a real bug an actual live run
+    # caught - see enrichment.find_prior_fights).
     enrichment = assembly.build_fighter_enrichment(
         ALPHA_URL, opponent_name="Nobody Realname", target_event_date="2025-03-08"
     )
 
-    assert enrichment.prior_fights == []
-    assert enrichment.record_entering == "0-0"
-    assert enrichment.streak_entering == ("none", 0)
-    assert enrichment.layoff_days_entering is None
+    assert len(enrichment.prior_fights) == 3
+    assert [pf.opponent_name for pf in enrichment.prior_fights] == [
+        "Bravo Fighter",
+        "Charlie Fighter",
+        "Delta Fighter",
+    ]
+    assert enrichment.record_entering == "2-1"
+    assert enrichment.streak_entering == ("win", 2)
+
+    from datetime import date
+
+    expected_layoff = (date(2025, 3, 8) - date(2024, 1, 20)).days
+    assert enrichment.layoff_days_entering == expected_layoff
 
 
 def test_build_matchup_artifact_end_to_end():

@@ -9,11 +9,14 @@ reimplements enrichment's math.
 
 from __future__ import annotations
 
+import logging
 from datetime import date, datetime, timezone
 from typing import Any
 
 from . import apify_source, enrichment
 from .models import FighterEnrichment, MatchupArtifact, PriorFight
+
+logger = logging.getLogger(__name__)
 
 
 def _compute_age(date_of_birth: str, target_event_date: str) -> int:
@@ -71,10 +74,18 @@ def build_fighter_enrichment(
 ) -> FighterEnrichment:
     profile = apify_source.get_fighter_profile(fighter_url)
     fighter_name = profile.get("name") or ""
+    logger.info("Fetched profile for %r (%d fights on record)", fighter_name, len(profile.get("fightHistory") or []))
 
     raw_prior = enrichment.find_prior_fights(
         profile.get("fightHistory") or [], opponent_name, limit=3
     )
+    if not raw_prior:
+        logger.warning(
+            "No prior fights available for %r - they have zero fights on record.",
+            fighter_name,
+        )
+    else:
+        logger.info("Found %d prior fight(s) for %r before this matchup", len(raw_prior), fighter_name)
 
     record_entering = enrichment.compute_record_entering(fighter_name, raw_prior)
     streak_entering = enrichment.compute_streak_entering(fighter_name, raw_prior)
@@ -83,9 +94,12 @@ def build_fighter_enrichment(
     prior_fights: list[PriorFight] = []
     event_dates: dict[str, str] = {}
     for entry in raw_prior:
+        logger.info("Enriching prior fight %s (vs an earlier opponent)", entry.get("id"))
         prior_fight, event_date = _build_prior_fight(entry, fighter_name)
         prior_fights.append(prior_fight)
         event_dates[entry.get("id")] = event_date
+        if not event_date:
+            logger.warning("No event date resolved for prior fight %s", entry.get("id"))
 
     layoff_days_entering = enrichment.compute_layoff_days(
         raw_prior, target_event_date, event_dates
@@ -130,14 +144,18 @@ def _fighter_name_by_url(bout: dict[str, Any], fighter_url: str) -> str:
 def build_matchup_artifact(
     fighter_a_url: str, fighter_b_url: str, event_url: str
 ) -> MatchupArtifact:
+    logger.info("Building matchup artifact: event=%s fighter_a=%s fighter_b=%s", event_url, fighter_a_url, fighter_b_url)
     event = apify_source.get_event_detail(event_url)
     bout = _find_bout(event, fighter_a_url, fighter_b_url)
 
     fighter_a_name = _fighter_name_by_url(bout, fighter_a_url)
     fighter_b_name = _fighter_name_by_url(bout, fighter_b_url)
     weight_class = bout.get("weightClass") or ""
+    logger.info("Matchup identified: %r vs %r, event date %s", fighter_a_name, fighter_b_name, event.get("date"))
 
     event_date = event.get("date") or ""
+    if not event_date:
+        logger.warning("Target event %s has no resolved date - age/layoff math downstream will be affected", event_url)
 
     fighter_a = build_fighter_enrichment(
         fighter_a_url, opponent_name=fighter_b_name, target_event_date=event_date
@@ -145,6 +163,7 @@ def build_matchup_artifact(
     fighter_b = build_fighter_enrichment(
         fighter_b_url, opponent_name=fighter_a_name, target_event_date=event_date
     )
+    logger.info("Matchup artifact assembled successfully")
 
     return MatchupArtifact(
         event_id=event.get("id") or event.get("sourceId") or "",
