@@ -1,0 +1,388 @@
+[
+  {
+    "recordType": "fighter",
+    "sourceId": "d4270315cbcf2569",
+    "name": "Jacob Malkoun",
+    "nickname": "Mamba",
+    "record": "10-3-0",
+    "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569",
+    "height": "5' 9\"",
+    "weight": "185 lbs.",
+    "reach": "73\"",
+    "stance": "Orthodox",
+    "dateOfBirth": "1995-08-26",
+    "careerStatistics": {
+      "SLpM": "4.23",
+      "SApM": "2.33",
+      "Str. Acc.": "56%",
+      "Str. Def": "55%",
+      "TD Avg.": "5.39",
+      "TD Acc.": "42%",
+      "TD Def.": "55%",
+      "Sub. Avg.": "0.8"
+    },
+    "fightHistory": [
+      {
+        "id": "edff38661bf2866b",
+        "url": "http://ufcstats.com/fight-details/edff38661bf2866b",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "6ac9bc2953c47345",
+            "name": "Gerald Meerschaert",
+            "url": "http://ufcstats.com/fighter-details/6ac9bc2953c47345"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "36",
+          "32"
+        ],
+        "takedowns": [
+          "3",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "3"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "0047f8aadca1936f",
+        "url": "http://ufcstats.com/fight-details/0047f8aadca1936f",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "1",
+          "0"
+        ],
+        "significantStrikes": [
+          "117",
+          "27"
+        ],
+        "takedowns": [
+          "2",
+          "0"
+        ],
+        "submissionAttempts": [
+          "3",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "ce33085fc5205bab",
+        "url": "http://ufcstats.com/fight-details/ce33085fc5205bab",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "5f61780fe5e9b6d0",
+            "name": "Andre Petroski",
+            "url": "http://ufcstats.com/fighter-details/5f61780fe5e9b6d0"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "20",
+          "13"
+        ],
+        "takedowns": [
+          "0",
+          "1"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "KO/TKO",
+        "round": 2,
+        "time": "0:39"
+      },
+      {
+        "id": "1496969c1497dc85",
+        "url": "http://ufcstats.com/fight-details/1496969c1497dc85",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "f14f644d41ade29f",
+            "name": "Cody Brundage",
+            "url": "http://ufcstats.com/fighter-details/f14f644d41ade29f"
+          }
+        ],
+        "result": [
+          "loss",
+          "win"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "28",
+          "2"
+        ],
+        "takedowns": [
+          "1",
+          "1"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "DQ",
+        "round": 1,
+        "time": "4:15"
+      },
+      {
+        "id": "860050f211b44d10",
+        "url": "http://ufcstats.com/fight-details/860050f211b44d10",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "12585614e0ed2626",
+            "name": "Nick Maximov",
+            "url": "http://ufcstats.com/fighter-details/12585614e0ed2626"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "83",
+          "34"
+        ],
+        "takedowns": [
+          "9",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "50eed57ea1390e16",
+        "url": "http://ufcstats.com/fight-details/50eed57ea1390e16",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "2f181c0467965b98",
+            "name": "Brendan Allen",
+            "url": "http://ufcstats.com/fighter-details/2f181c0467965b98"
+          }
+        ],
+        "result": [
+          "loss",
+          "win"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "33",
+          "45"
+        ],
+        "takedowns": [
+          "7",
+          "2"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "c16bda7548181613",
+        "url": "http://ufcstats.com/fight-details/c16bda7548181613",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "009c4420727149ea",
+            "name": "AJ Dobson",
+            "url": "http://ufcstats.com/fighter-details/009c4420727149ea"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "80",
+          "52"
+        ],
+        "takedowns": [
+          "6",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "a850ba762f3c5334",
+        "url": "http://ufcstats.com/fight-details/a850ba762f3c5334",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "eae431e70064e046",
+            "name": "Abdul Razak Alhassan",
+            "url": "http://ufcstats.com/fighter-details/eae431e70064e046"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "27",
+          "21"
+        ],
+        "takedowns": [
+          "8",
+          "0"
+        ],
+        "submissionAttempts": [
+          "2",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "a2620cbef573a837",
+        "url": "http://ufcstats.com/fight-details/a2620cbef573a837",
+        "fighters": [
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          },
+          {
+            "id": "547afe1017e72dbe",
+            "name": "Phil Hawes",
+            "url": "http://ufcstats.com/fighter-details/547afe1017e72dbe"
+          }
+        ],
+        "result": [
+          "loss",
+          "win"
+        ],
+        "knockdowns": [
+          "0",
+          "1"
+        ],
+        "significantStrikes": [
+          "0",
+          "7"
+        ],
+        "takedowns": [
+          "0",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "KO/TKO",
+        "round": 1,
+        "time": "0:18"
+      }
+    ],
+    "scrapedAt": "2026-09-02T03:52:08.015Z"
+  }
+]

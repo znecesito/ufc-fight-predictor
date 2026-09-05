@@ -1,0 +1,228 @@
+[
+  {
+    "recordType": "fighter",
+    "sourceId": "fbb60f24af5d5a02",
+    "name": "Torrez Finney",
+    "nickname": "The Punisher",
+    "record": "11-1-0",
+    "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02",
+    "height": "5' 8\"",
+    "weight": "185 lbs.",
+    "reach": "75\"",
+    "stance": "Orthodox",
+    "dateOfBirth": "1998-10-24",
+    "careerStatistics": {
+      "SLpM": "1.78",
+      "SApM": "3.34",
+      "Str. Acc.": "54%",
+      "Str. Def": "40%",
+      "TD Avg.": "6.86",
+      "TD Acc.": "59%",
+      "TD Def.": "75%",
+      "Sub. Avg.": "0.8"
+    },
+    "fightHistory": [
+      {
+        "id": "0047f8aadca1936f",
+        "url": "http://ufcstats.com/fight-details/0047f8aadca1936f",
+        "fighters": [
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          },
+          {
+            "id": "d4270315cbcf2569",
+            "name": "Jacob Malkoun",
+            "url": "http://ufcstats.com/fighter-details/d4270315cbcf2569"
+          }
+        ],
+        "result": [
+          "loss",
+          "win"
+        ],
+        "knockdowns": [
+          "0",
+          "1"
+        ],
+        "significantStrikes": [
+          "27",
+          "117"
+        ],
+        "takedowns": [
+          "0",
+          "2"
+        ],
+        "submissionAttempts": [
+          "0",
+          "3"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "d1368ca941c1fefc",
+        "url": "http://ufcstats.com/fight-details/d1368ca941c1fefc",
+        "fighters": [
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          },
+          {
+            "id": "0cd0456d6029cec2",
+            "name": "Robert Valentin",
+            "url": "http://ufcstats.com/fighter-details/0cd0456d6029cec2"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "4",
+          "23"
+        ],
+        "takedowns": [
+          "8",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "S-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "6341ee3adf9e0995",
+        "url": "http://ufcstats.com/fight-details/6341ee3adf9e0995",
+        "fighters": [
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          },
+          {
+            "id": "b593cd58b0afffb0",
+            "name": "Abdellah Er-Ramy",
+            "url": "http://ufcstats.com/fighter-details/b593cd58b0afffb0"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "35",
+          "0"
+        ],
+        "takedowns": [
+          "1",
+          "0"
+        ],
+        "submissionAttempts": [
+          "1",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "KO/TKO",
+        "round": 1,
+        "time": "4:10"
+      },
+      {
+        "id": "def9727f272e24ab",
+        "url": "http://ufcstats.com/fight-details/def9727f272e24ab",
+        "fighters": [
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          },
+          {
+            "id": "8ebc3a8da015d70c",
+            "name": "Cam Rowston",
+            "url": "http://ufcstats.com/fighter-details/8ebc3a8da015d70c"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "28",
+          "32"
+        ],
+        "takedowns": [
+          "10",
+          "0"
+        ],
+        "submissionAttempts": [
+          "0",
+          "1"
+        ],
+        "weightClass": null,
+        "method": "U-DEC",
+        "round": 3,
+        "time": "5:00"
+      },
+      {
+        "id": "fca372c8d6161f81",
+        "url": "http://ufcstats.com/fight-details/fca372c8d6161f81",
+        "fighters": [
+          {
+            "id": "fbb60f24af5d5a02",
+            "name": "Torrez Finney",
+            "url": "http://ufcstats.com/fighter-details/fbb60f24af5d5a02"
+          },
+          {
+            "id": "36d811b015635b67",
+            "name": "Yuri Panferov",
+            "url": "http://ufcstats.com/fighter-details/36d811b015635b67"
+          }
+        ],
+        "result": [
+          "win",
+          "loss"
+        ],
+        "knockdowns": [
+          "0",
+          "0"
+        ],
+        "significantStrikes": [
+          "7",
+          "18"
+        ],
+        "takedowns": [
+          "7",
+          "0"
+        ],
+        "submissionAttempts": [
+          "2",
+          "0"
+        ],
+        "weightClass": null,
+        "method": "SUB",
+        "round": 2,
+        "time": "2:43"
+      }
+    ],
+    "scrapedAt": "2026-09-02T03:52:18.268Z"
+  }
+]

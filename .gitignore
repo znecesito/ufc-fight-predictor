@@ -9,3 +9,4 @@ apify_runs_archive.json
 *_enriched.json
 *_fight.json
 *_jenko.json
+!tests/fixtures/*.json
