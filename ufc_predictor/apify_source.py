@@ -52,3 +52,57 @@ def get_upcoming_events(limit: int = 5) -> list[dict]:
     if not items:
         raise ApifySourceError("No upcoming events were returned.")
     return items
+
+
+def get_fighter_profile(fighter_url: str) -> dict:
+    """Return the full profile record for a single fighter."""
+    items = _run_actor(
+        {
+            "mode": "fighters",
+            "startUrls": [{"url": fighter_url}],
+            "includeDetails": True,
+            "maxItems": 1,
+        }
+    )
+    if not items:
+        raise ApifySourceError("No fighter profile was returned.")
+    return items[0]
+
+
+def get_fight_detail(fight_url: str) -> dict:
+    """Return the full detail record for a single fight."""
+    items = _run_actor(
+        {
+            "mode": "fights",
+            "eventStatus": "all",
+            "startUrls": [{"url": fight_url}],
+            "includeDetails": True,
+            "maxItems": 1,
+        }
+    )
+    if not items:
+        raise ApifySourceError("No fight detail was returned.")
+    return items[0]
+
+
+def get_event_detail(event_url: str) -> dict:
+    """Return the event record for a single event.
+
+    Uses `includeDetails: False` and `events` mode specifically: the `date`
+    field inside a `fights`-mode response's nested `event` object always
+    comes back null (a verified actor bug), but calling `events` mode
+    directly on the same event's URL reliably returns the real date. This
+    function exists to backfill that date, not to fetch bout details.
+    """
+    items = _run_actor(
+        {
+            "mode": "events",
+            "eventStatus": "all",
+            "startUrls": [{"url": event_url}],
+            "includeDetails": False,
+            "maxItems": 1,
+        }
+    )
+    if not items:
+        raise ApifySourceError("No event detail was returned.")
+    return items[0]
